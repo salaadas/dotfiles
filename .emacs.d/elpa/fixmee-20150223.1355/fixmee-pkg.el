@@ -1,0 +1,2 @@
+;;; Generated package description from fixmee.el  -*- no-byte-compile: t -*-
+(define-package "fixmee" "20150223.1355" "Quickly navigate to FIXME notices in code" '((button-lock "1.0.2") (nav-flash "1.0.0") (back-button "0.6.0") (smartrep "0.0.3") (string-utils "0.3.2") (tabulated-list "0")) :commit "5cddb64e0d52635e9a1529d80cb5cefa6f829341" :authors '(("Roland Walker" . "walker@pobox.com")) :maintainer '("Roland Walker" . "walker@pobox.com") :keywords '("navigation" "convenience") :url "http://github.com/rolandwalker/fixmee")
