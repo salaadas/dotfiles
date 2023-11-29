@@ -10,8 +10,7 @@
 (defun rc/get-default-font ()
   (cond
    ((eq system-type 'windows-nt) "Consolas-13")
-   ((eq system-type 'gnu/linux) "Iosevka-20")
-   ((eq system-type 'darwin) "Iosevka-20")))
+   ((eq system-type 'gnu/linux) "Iosevka-18")))
 
 (add-to-list 'default-frame-alist `(font . ,(rc/get-default-font)))
 
@@ -21,19 +20,19 @@
 (column-number-mode 1)
 (show-paren-mode 1)
 
-(rc/require-theme 'gruber-darker)
+;; (rc/require-theme 'gruber-darker)
 ;; (rc/require-theme 'zenburn)
 ;; (load-theme 'adwaita t)
+
+;; my own theme
+(load-theme 'actraiser t)
 
 (eval-after-load 'zenburn
   (set-face-attribute 'line-number nil :inherit 'default))
 
-(when (eq system-type 'darwin)
-  (setq mac-command-modifier 'control)
-  (setq mac-option-modifier  'meta)
-  (setq mac-control-modifier 'super))
-
-(setq ring-bell-function 'ignore)
+;;; tree sitter
+(rc/require 'tree-sitter)
+(rc/require 'tree-sitter-langs)
 
 ;;; ido
 (rc/require 'smex 'ido-completing-read+)
@@ -47,6 +46,16 @@
 (global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
+;;; javascript-mode
+;; (setq js-indent-level 2)
+
+;; (setq js-indent-level 2
+;;       js2-basic-offset 2
+;;       web-mode-markup-indent-offset 2
+;;       web-mode-css-indent-offset 2
+;;       web-mode-code-indent-offset 2
+;;       web-mode-indent-style 2)
+
 ;;; c-mode
 (setq-default c-basic-offset 4
               c-default-style '((java-mode . "java")
@@ -56,6 +65,12 @@
 (add-hook 'c-mode-hook (lambda ()
                          (interactive)
                          (c-toggle-comment-style -1)))
+
+(require 'package)
+;; Any add to list for package-archives (to add marmalade or melpa) goes here
+(add-to-list 'package-archives 
+    '("MELPA" .
+      "http://melpa.org/packages/"))
 
 ;;; Paredit
 (rc/require 'paredit)
@@ -69,7 +84,6 @@
 (add-hook 'lisp-mode-hook        'rc/turn-on-paredit)
 (add-hook 'common-lisp-mode-hook 'rc/turn-on-paredit)
 (add-hook 'scheme-mode-hook      'rc/turn-on-paredit)
-(add-hook 'racket-mode-hook      'rc/turn-on-paredit)
 
 ;;; Emacs lisp
 (add-hook 'emacs-lisp-mode-hook
@@ -95,9 +109,9 @@
   (whitespace-mode 1)
   (add-to-list 'write-file-functions 'delete-trailing-whitespace))
 
-(add-hook 'tuareg-mode-hook 'rc/set-up-whitespace-handling)
 (add-hook 'c++-mode-hook 'rc/set-up-whitespace-handling)
 (add-hook 'c-mode-hook 'rc/set-up-whitespace-handling)
+(add-hook 'simpc-mode-hook 'rc/set-up-whitespace-handling)
 (add-hook 'emacs-lisp-mode 'rc/set-up-whitespace-handling)
 (add-hook 'java-mode-hook 'rc/set-up-whitespace-handling)
 (add-hook 'lua-mode-hook 'rc/set-up-whitespace-handling)
@@ -106,13 +120,11 @@
 (add-hook 'markdown-mode-hook 'rc/set-up-whitespace-handling)
 (add-hook 'haskell-mode-hook 'rc/set-up-whitespace-handling)
 (add-hook 'python-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'erlang-mode-hook 'rc/set-up-whitespace-handling)
 (add-hook 'asm-mode-hook 'rc/set-up-whitespace-handling)
 (add-hook 'nasm-mode-hook 'rc/set-up-whitespace-handling)
 (add-hook 'go-mode-hook 'rc/set-up-whitespace-handling)
 (add-hook 'nim-mode-hook 'rc/set-up-whitespace-handling)
 (add-hook 'yaml-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'porth-mode-hook 'rc/set-up-whitespace-handling)
 
 ;;; display-line-numbers-mode
 (when (version<= "26.0.50" emacs-version)
@@ -146,17 +158,17 @@
 (setq-default dired-dwim-target t)
 (setq dired-listing-switches "-alh")
 
-;;; helm
-(rc/require 'helm 'helm-cmd-t 'helm-git-grep 'helm-ls-git)
+;; ;;; helm
+;; (rc/require 'helm 'helm-git-grep 'helm-ls-git)
 
-(setq helm-ff-transformer-show-only-basename nil)
+;; (setq helm-ff-transformer-show-only-basename nil)
 
-(global-set-key (kbd "C-c h t") 'helm-cmd-t)
-(global-set-key (kbd "C-c h g g") 'helm-git-grep)
-(global-set-key (kbd "C-c h g l") 'helm-ls-git-ls)
-(global-set-key (kbd "C-c h f") 'helm-find)
-(global-set-key (kbd "C-c h a") 'helm-org-agenda-files-headings)
-(global-set-key (kbd "C-c h r") 'helm-recentf)
+;; (global-set-key (kbd "C-c h t") 'helm-cmd-t)
+;; (global-set-key (kbd "C-c h g g") 'helm-git-grep)
+;; (global-set-key (kbd "C-c h g l") 'helm-ls-git-ls)
+;; (global-set-key (kbd "C-c h f") 'helm-find)
+;; (global-set-key (kbd "C-c h a") 'helm-org-agenda-files-headings)
+;; (global-set-key (kbd "C-c h r") 'helm-recentf)
 
 ;;; yasnippet
 (rc/require 'yasnippet)
@@ -200,6 +212,9 @@
 (rc/require 'company)
 (require 'company)
 
+(add-to-list 'company-backends '(company-dabbrev-code company-dabbrev company-capf))
+(setq company-dabbrev-downcase nil)
+
 (global-company-mode)
 
 (add-hook 'tuareg-mode-hook
@@ -215,10 +230,6 @@
   (tide-setup))
 
 (add-hook 'typescript-mode-hook 'rc/turn-on-tide)
-
-;;; Editorconfig
-(rc/require 'editorconfig)
-(editorconfig-mode 1)
 
 ;;; Proof general
 (rc/require 'proof-general)
@@ -237,6 +248,8 @@
             (interactive)
             (add-to-list 'tex-verbatim-environments "code")))
 
+(setq font-latex-fontify-sectioning 'color)
+
 ;;; Move Text
 (rc/require 'move-text)
 (global-set-key (kbd "M-p") 'move-text-up)
@@ -245,27 +258,17 @@
 ;;; Ebisp
 (add-to-list 'auto-mode-alist '("\\.ebi\\'" . lisp-mode))
 
-;;; Fixmee
-
-(rc/require 'fixmee)
-(require 'fixmee)
-(require 'button-lock)
-(global-fixmee-mode 1)
-
 ;;; Packages that don't require configuration
 (rc/require
  'scala-mode
- 'd-mode
  'yaml-mode
  'glsl-mode
- 'tuareg
  'lua-mode
  'less-css-mode
  'graphviz-dot-mode
  'clojure-mode
  'cmake-mode
  'rust-mode
- 'csharp-mode
  'nim-mode
  'jinja2-mode
  'markdown-mode
@@ -277,9 +280,6 @@
  'kotlin-mode
  'go-mode
  'php-mode
- 'racket-mode
- 'qml-mode
- 'ag
  'hindent
  'elpy
  'typescript-mode
@@ -291,7 +291,6 @@
 
 (add-to-list 'load-path "~/.emacs.local/")
 (require 'basm-mode)
-(require 'porth-mode)
 
 (require 'simpc-mode)
 (add-to-list 'auto-mode-alist '("\\.[hc]\\(pp\\)?\\'" . simpc-mode))
@@ -302,7 +301,7 @@
     (shell-command-on-region
      (point-min)
      (point-max)
-     "astyle --style=kr"
+     "astyle --style=bsd"
      nil
      t)
     (goto-line saved-line-number)))
@@ -328,6 +327,7 @@ compilation-error-regexp-alist-alist
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(display-line-numbers-type 'relative)
+ '(js-indent-level 2)
  '(org-agenda-dim-blocked-tasks nil)
  '(org-agenda-exporter-settings '((org-agenda-tag-filter-preset (list "+personal"))))
  '(org-cliplink-transport-implementation 'url-el)
@@ -336,12 +336,13 @@ compilation-error-regexp-alist-alist
    '(org-bbdb org-bibtex org-docview org-gnus org-habit org-info org-irc org-mhe org-rmail org-w3m))
  '(org-refile-use-outline-path 'file)
  '(package-selected-packages
-   '(rainbow-mode proof-general elpy hindent ag qml-mode racket-mode php-mode go-mode kotlin-mode nginx-mode toml-mode love-minor-mode dockerfile-mode nix-mode purescript-mode markdown-mode jinja2-mode nim-mode csharp-mode rust-mode cmake-mode clojure-mode graphviz-dot-mode lua-mode tuareg glsl-mode yaml-mode d-mode scala-mode move-text nasm-mode editorconfig tide company powershell js2-mode yasnippet helm-ls-git helm-git-grep helm-cmd-t helm multiple-cursors magit haskell-mode paredit ido-completing-read+ smex gruber-darker-theme org-cliplink dash-functional dash))
+   '(fixmee highlight-numbers tree-sitter-langs tree-sitter helm dart-mode gruvbox-dark-hard-theme gruvbox-theme web-mode rainbow-mode proof-general elpy hindent php-mode go-mode kotlin-mode nginx-mode toml-mode dockerfile-mode purescript-mode markdown-mode jinja2-mode nim-mode rust-mode cmake-mode clojure-mode graphviz-dot-mode lua-mode glsl-mode yaml-mode scala-mode move-text nasm-mode editorconfig tide company powershell yasnippet multiple-cursors magit haskell-mode paredit ido-completing-read+ smex gruber-darker-theme org-cliplink dash-functional dash))
  '(safe-local-variable-values
    '((eval progn
            (auto-revert-mode 1)
            (rc/autopull-changes)
            (add-hook 'after-save-hook 'rc/autocommit-changes nil 'make-it-local))))
+ '(warning-suppress-types '((comp) (comp) (comp) (comp) (comp) (comp)))
  '(whitespace-style
    '(face tabs spaces trailing space-before-tab newline indentation empty space-after-tab space-mark tab-mark)))
 (custom-set-faces
