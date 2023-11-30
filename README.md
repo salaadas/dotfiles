@@ -6,17 +6,20 @@ Fonts:
 
 Programs for development:
 
-- urxvt
-- vim
-- emacs
-- mypaint
-- i3
-- i3status
-- i3lock
-- flameshot
-- mupdf
-- chromium
-- feh
+- urxvt:        terminal
+- tmux:         terminal overlay (multiplexer)
+- vim:          text editor
+- emacs:        text editor
+- mypaint:      paint utility
+- i3:           window manager
+- i3status:     statusbar
+- i3lock:       screen locker
+- flameshot:    screenshoot tool
+- evince/mupdf: pdf viewer 
+- chromium:     web browser
+- feh:          image viewer
+- ibus:         for multiple language support
+- obs:          screen recorder, streaming
 
 - build-essential
 - GLFW, GL, SDL
