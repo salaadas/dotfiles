@@ -290,7 +290,6 @@
 (load "~/.emacs.shadow/shadow-rc.el" t)
 
 (add-to-list 'load-path "~/.emacs.local/")
-(require 'basm-mode)
 
 (require 'simpc-mode)
 (add-to-list 'auto-mode-alist '("\\.[hc]\\(pp\\)?\\'" . simpc-mode))
