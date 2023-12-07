@@ -1,8 +1,14 @@
 # My dot files for setting up new laptops in the future
 
+## Emacs theme
+
+Put the file `./emacs-theme/actraiser-theme.el` under the folder `~/.emacs.d` in order to use the theme.
+
 ## Keyboard layout 
 
 Here is the guide to set up a custom keyboard layout (swap capslock with control and backspace with backslash):
+
+Before doing anything, download the custom symbol file and put it under the folder `/usr/share/X11/xkb/symbols`.
 
 First, edit `/usr/share/X11/xkb/rules/evdev`, add the following entry under `! option = symbols`:
 
