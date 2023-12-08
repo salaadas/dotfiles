@@ -131,8 +131,8 @@
   (global-display-line-numbers-mode))
 
 ;;; magit
-;; magit requres this lib, but it is not installed automatically on
-;; Windows.
+;;; magit requres this lib, but it is not installed automatically on
+;;; Windows.
 (rc/require 'cl-lib)
 (rc/require 'magit)
 
@@ -178,7 +178,7 @@
 (setq yas/triggers-in-field nil)
 (setq yas-snippet-dirs '("~/.emacs.snippets/"))
 
-(yas-global-mode 1)
+(yas-global-mode 0)
 
 ;;; word-wrap
 (defun rc/enable-word-wrap ()
