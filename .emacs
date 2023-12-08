@@ -128,7 +128,7 @@
 
 ;;; display-line-numbers-mode
 (when (version<= "26.0.50" emacs-version)
-  (global-display-line-numbers-mode))
+  (global-display-line-numbers-mode 0))
 
 ;;; magit
 ;;; magit requres this lib, but it is not installed automatically on
