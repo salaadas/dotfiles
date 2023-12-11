@@ -30,6 +30,11 @@
 (eval-after-load 'zenburn
   (set-face-attribute 'line-number nil :inherit 'default))
 
+(define-key global-map "\M-2" 'split-window-below)
+(define-key global-map "\M-3" 'split-window-right)
+(define-key global-map "\M-o" 'other-window)
+(define-key global-map "\M-k" 'kill-this-buffer)
+
 ;;; tree sitter
 (rc/require 'tree-sitter)
 (rc/require 'tree-sitter-langs)
@@ -45,6 +50,11 @@
 
 (global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+
+;;; hl-line mode
+(global-hl-line-mode 1)
+;; if you want to get funky
+(set-face-background 'hl-line "midnight blue")
 
 ;;; javascript-mode
 ;; (setq js-indent-level 2)
@@ -292,7 +302,7 @@
 (add-to-list 'load-path "~/.emacs.local/")
 
 (require 'simpc-mode)
-(add-to-list 'auto-mode-alist '("\\.[hc]\\(pp\\)?\\'" . simpc-mode))
+(add-to-list 'auto-mode-alist '("\\.[hh|cc]\\'" . simpc-mode))
 
 (defun astyle-buffer (&optional justify)
   (interactive)

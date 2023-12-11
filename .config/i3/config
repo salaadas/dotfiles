@@ -200,9 +200,11 @@ bindsym XF86MonBrightnessDown exec light -U 5 && brightness_change_notif
 # Screensaver and lock with i3lock
 # idk why but xautolock does not work
 # exec --no-startup-id xautolock -time 20 -locker 'i3lock --color=081810 -n' -detectsleep -killtime 60 -killer 'systemctl suspend' &
-exec --no-startup-id xset dpms 0 0 600 &
-exec --no-startup-id xss-lock -- i3lock -n --color=081810
-bindsym $mod+Pause systemctl suspend
+# exec --no-startup-id xset dpms 0 0 600 &
+# exec --no-startup-id xss-lock -- i3lock -n --color=081810
+exec_always --no-startup-id xset dpms 0 0 1200 &
+exec_always --no-startup-id xss-lock -- i3lock -n -c 181818 &
+bindsym $mod+Pause exec i3lock -c 000000 && systemctl suspend
 bindsym Pause exec i3lock --color=#081810
 
 # Start i3bar to display a workspace bar (plus the system information i3status
