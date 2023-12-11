@@ -27,9 +27,29 @@
 ;; my own theme
 (load-theme 'actraiser t)
 
+;;; use this to disable `Async-native-compile-log` at startup with Emacs 29+
+(setq native-comp-jit-compilation-deny-list '(".*-loaddefs.el.gz"))
+
+;;; use this to close the message buffer on startup
+(setq-default message-log-max nil)
+(kill-buffer "*Messages*")
+
+;;; show the clock in the taskbar
+(setq display-time-format "---------------- %a, %d %b %y: %I:%M%p")
+(setq display-time-default-load-average nil)
+(setq display-time-mail-string "")
+(display-time)
+
 (eval-after-load 'zenburn
   (set-face-attribute 'line-number nil :inherit 'default))
 
+
+;;; my custom keys
+(define-key global-map "\M-[" 'previous-buffer)
+(define-key global-map "\M-]" 'next-buffer)
+
+(define-key global-map "\M-0" 'delete-window)
+(define-key global-map "\M-1" 'delete-other-windows)
 (define-key global-map "\M-2" 'split-window-below)
 (define-key global-map "\M-3" 'split-window-right)
 (define-key global-map "\M-o" 'other-window)
@@ -54,7 +74,8 @@
 ;;; hl-line mode
 (global-hl-line-mode 1)
 ;; if you want to get funky
-(set-face-background 'hl-line "midnight blue")
+;; (set-face-background 'hl-line "midnight blue")
+;; (set-face-background 'hl-line "RoyalBlue4")
 
 ;;; javascript-mode
 ;; (setq js-indent-level 2)
@@ -77,10 +98,10 @@
                          (c-toggle-comment-style -1)))
 
 (require 'package)
-;; Any add to list for package-archives (to add marmalade or melpa) goes here
-(add-to-list 'package-archives 
-    '("MELPA" .
-      "http://melpa.org/packages/"))
+;; ;; Any add to list for package-archives (to add marmalade or melpa) goes here
+;; (add-to-list 'package-archives 
+;;     '("MELPA" .
+;;       "http://melpa.org/packages/"))
 
 ;;; Paredit
 (rc/require 'paredit)
@@ -119,9 +140,9 @@
   (whitespace-mode 1)
   (add-to-list 'write-file-functions 'delete-trailing-whitespace))
 
-(add-hook 'c++-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'c-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'simpc-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'c++-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'c-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'simpc-mode-hook 'rc/set-up-whitespace-handling)
 (add-hook 'emacs-lisp-mode 'rc/set-up-whitespace-handling)
 (add-hook 'java-mode-hook 'rc/set-up-whitespace-handling)
 (add-hook 'lua-mode-hook 'rc/set-up-whitespace-handling)
