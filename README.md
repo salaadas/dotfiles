@@ -83,3 +83,34 @@ Finally, if you want to make the changes permanent, add the `setxkbmap` line to 
 - unzip
 - wget
 - libtool
+
+## Guide to install custom fonts without root priviledges
+
+for Truetype fonts, the installation process would be like this:
+
+```
+mkdir ~/.fonts
+```
+
+Move your fonts to `~/.fonts`
+
+```
+mv *.ttf ~/.fonts
+```
+
+Create the fonts.dir and fonts scale files
+
+```
+cd ~/.fonts
+mkfontscale
+mkfontdir
+fc-cache -fv ~/.fonts
+```
+
+The new font should now be available. Check if the font has been added by running `fc-list`
+
+```
+fc-list
+```
+
+You are all set
