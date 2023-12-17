@@ -12,12 +12,15 @@ Check out the files in the repo for my version of the `default.conf`.
 
 Here are some of the useful commands that `keyd` provides:
 
-```
-sudo systemctl enable keyd && sudo systemctl start keyd # run this after install keyd
+```bash
+# run this after install keyd
+sudo systemctl enable keyd && sudo systemctl start keyd
 
-sudo keyd monitor # this would monitor your key presses from multiple input sources
+# this would monitor your key presses from multiple input sources
+sudo keyd monitor 
 
-sudo key reload # this would apply the changes to the system
+# this would apply the changes to the system
+sudo key reload 
 
 sudo journalctl --pager-end --unit=keyd # check for errors with keyd
 ```
@@ -104,6 +107,9 @@ Finally, if you want to make the changes permanent, add the `setxkbmap` line to 
 - ibus:         for multiple language support
 - obs:          screen recorder, streaming
 - [alttab](https://github.com/sagb/alttab): alt-tab feature for x11
+- [keyd](https://github.com/rvaiya/keyd): for changing out layouts of keyboards
+
+---
 
 - build-essential
 - GLFW, GL, SDL
