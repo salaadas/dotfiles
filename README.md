@@ -4,7 +4,35 @@
 
 Put the file `./emacs-theme/actraiser-theme.el` under the folder `~/.emacs.d` in order to use the theme.
 
-## Keyboard layout 
+## Using keyd (key-daemon) to change out layout of multiple keyboards
+
+[keyd](https://github.com/rvaiya/keyd) is a tool for managing layout of different keyboards. What you need to do is to install it and set up the config file under `/etc/keyd/default.conf`.
+
+Check out the files in the repo for my version of the `default.conf`.
+
+Here are some of the useful commands that `keyd` provides:
+
+```
+sudo systemctl enable keyd && sudo systemctl start keyd # run this after install keyd
+
+sudo keyd monitor # this would monitor your key presses from multiple input sources
+
+sudo key reload # this would apply the changes to the system
+
+sudo journalctl --pager-end --unit=keyd # check for errors with keyd
+```
+
+## Keyboard layout for edge case scenerio (check the newer guide)
+
+## Persistent keyboard layout switch
+
+https://bbs.archlinux.org/viewtopic.php?id=262467
+
+https://stackoverflow.com/questions/58019772/need-to-toggle-layout-globally-instead-of-per-window-using-setxkbmap
+
+https://askubuntu.com/questions/501659/how-to-swap-command-and-control-keys-with-xkb-step-by-step/501660#501660
+
+## The guide itself
 
 Here is the guide to set up a custom keyboard layout (swap capslock with control and backspace with backslash):
 
@@ -70,11 +98,12 @@ Finally, if you want to make the changes permanent, add the `setxkbmap` line to 
 - i3status:     statusbar
 - i3lock:       screen locker
 - flameshot:    screenshoot tool
-- evince/mupdf: pdf viewer 
+- evince/mupdf: pdf viewer
 - chromium:     web browser
 - feh:          image viewer
 - ibus:         for multiple language support
 - obs:          screen recorder, streaming
+- [alttab](https://github.com/sagb/alttab): alt-tab feature for x11
 
 - build-essential
 - GLFW, GL, SDL

@@ -10,9 +10,9 @@ xkb_symbols "hhkb_layout"
     key <BKSL> { [ BackSpace, BackSpace ] };
 
     // Caps Lock to Ctrl
-    key <LCTL> { [ Control_R ] };                   // LCtrl    -> RCtrl
-    key <RCTL> { [ Caps_Lock ] };                   // RCtrl    -> CapsLock
-    key <CAPS> { [ Control_L ] };                   // CapsLock -> LCtrl
+    replace key <LCTL> { [ Control_R ] };                   // LCtrl    -> RCtrl
+    replace key <RCTL> { [ Caps_Lock ] };                   // RCtrl    -> CapsLock
+    replace key <CAPS> { [ Control_L ] };                   // CapsLock -> LCtrl
     modifier_map Lock    { <RCTL> };
     modifier_map Control { <LCTL>, <CAPS> };
 };

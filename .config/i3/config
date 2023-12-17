@@ -203,9 +203,12 @@ bindsym XF86MonBrightnessDown exec light -U 5 && brightness_change_notif
 # exec --no-startup-id xset dpms 0 0 600 &
 # exec --no-startup-id xss-lock -- i3lock -n --color=081810
 exec_always --no-startup-id xset dpms 0 0 1200 &
-exec_always --no-startup-id xss-lock -- i3lock -n -c 181818 &
+exec_always --no-startup-id xss-lock -- i3lock -n --color=181818 &
 bindsym $mod+Pause exec systemctl suspend
 bindsym Pause exec i3lock --color=#081810
+
+# set up alt-tab feature
+exec --no-startup-id alttab -font xft:DejaVu Sans Condensed-12 -fg '#dbbe97' -bg '#181818' -frame '#dca3a3' -t 256x256 -i 256x70 -s 2
 
 # set up scratch pad
 bindsym $mod+Shift+BackSpace move scratchpad
