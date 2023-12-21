@@ -10,7 +10,7 @@
 (defun rc/get-default-font ()
   (cond
    ((eq system-type 'windows-nt) "Consolas-13")
-   ((eq system-type 'gnu/linux) "Iosevka-18")))
+   ((eq system-type 'gnu/linux) "Iosevka-16")))
 
 (add-to-list 'default-frame-alist `(font . ,(rc/get-default-font)))
 
@@ -19,6 +19,62 @@
 (scroll-bar-mode 0)
 (column-number-mode 1)
 (show-paren-mode 1)
+(toggle-truncate-lines 1)
+
+;; show ansi escape sequence in compilation mode Emacs
+(rc/require 'ansi-color)
+(defun my/ansi-colorize-buffer ()
+  (let ((buffer-read-only nil))
+    (ansi-color-apply-on-region (point-min) (point-max))))
+(add-hook 'compilation-filter-hook 'my/ansi-colorize-buffer)
+
+;; set up hot key for compilling
+
+(setq compilation-directory-locked nil)
+(setq salaadas-makescript "./build.sh")
+(setq salaadas-build-directory "build")
+
+(defun find-project-directory-recursive ()
+  "Recursively search for a makefile."
+  (interactive)
+  (if (string= default-directory "~") (error "Whoops! Could not find the build directory!!")
+      nil)
+
+  (if (file-directory-p salaadas-build-directory) (cd salaadas-build-directory)
+    (cd "../")
+    (find-project-directory-recursive)))
+
+(defun lock-compilation-directory ()
+  "The compilation process should NOT hunt for a build directory."
+  (interactive)
+  (setq compilation-directory-locked t)
+  (message "Compilation directory is locked."))
+
+(defun unlock-compilation-directory ()
+  "The compilation process SHOULD hunt for a build directory."
+  (interactive)
+  (setq compilation-directory-locked nil)
+  (message "Compilation directory is roaming."))
+
+(defun find-project-directory ()
+  "Find the project directory."
+  (interactive)
+  (setq find-project-from-directory default-directory)
+  (switch-to-buffer-other-window "*compilation*")
+  (if compilation-directory-locked (cd last-compilation-directory)
+    (cd find-project-from-directory)
+    (find-project-directory-recursive)
+    (setq last-compilation-directory default-directory)))
+
+(defun make-without-asking ()
+  "Make the current build."
+  (interactive)
+  (if (find-project-directory) (compile salaadas-makescript))
+  (other-window 1))
+(global-set-key [f10] 'make-without-asking)
+
+
+;;; themes
 
 ;; (rc/require-theme 'gruber-darker)
 ;; (rc/require-theme 'zenburn)
@@ -43,10 +99,30 @@
 (eval-after-load 'zenburn
   (set-face-attribute 'line-number nil :inherit 'default))
 
+;;; color for comments
+(setq fixmee-mode '(simpc-mode c++-mode c-mode emacs-lisp-mode))
+(make-face 'font-lock-fixme-face)
+(make-face 'font-lock-note-face)
+(make-face 'font-lock-incomplete-face)
+(make-face 'font-lock-todo-face)
+(mapc (lambda (mode)
+	    (font-lock-add-keywords
+	     mode
+	     '(("\\<\\(Todo\\)" 1 'font-lock-todo-face t)
+           ("\\<\\(Note\\)" 1 'font-lock-note-face t)
+           ("\\<\\(Incomplete\\)" 1 'font-lock-incomplete-face t)
+           ("\\<\\(Fixme\\)" 1 'font-lock-fixme-face t))))
+	  fixmee-mode)
+(modify-face 'font-lock-todo-face "GreenYellow" nil nil t nil t nil nil)
+(modify-face 'font-lock-note-face "AntiqueWhite1" nil nil t nil t nil nil)
+(modify-face 'font-lock-incomplete-face "aquamarine" nil nil t nil t nil nil)
+(modify-face 'font-lock-fixme-face "IndianRed" nil nil t nil t nil nil)
 
 ;;; my custom keys
 (define-key global-map "\M-[" 'previous-buffer)
 (define-key global-map "\M-]" 'next-buffer)
+
+(define-key global-map "\M-j" 'imenu)
 
 (define-key global-map "\M-0" 'delete-window)
 (define-key global-map "\M-1" 'delete-other-windows)
@@ -366,7 +442,7 @@ compilation-error-regexp-alist-alist
    '(org-bbdb org-bibtex org-docview org-gnus org-habit org-info org-irc org-mhe org-rmail org-w3m))
  '(org-refile-use-outline-path 'file)
  '(package-selected-packages
-   '(fixmee highlight-numbers tree-sitter-langs tree-sitter helm dart-mode gruvbox-dark-hard-theme gruvbox-theme web-mode rainbow-mode proof-general elpy hindent php-mode go-mode kotlin-mode nginx-mode toml-mode dockerfile-mode purescript-mode markdown-mode jinja2-mode nim-mode rust-mode cmake-mode clojure-mode graphviz-dot-mode lua-mode glsl-mode yaml-mode scala-mode move-text nasm-mode editorconfig tide company powershell yasnippet multiple-cursors magit haskell-mode paredit ido-completing-read+ smex gruber-darker-theme org-cliplink dash-functional dash))
+   '(ansi-color-theme fixmee highlight-numbers tree-sitter-langs tree-sitter helm dart-mode gruvbox-dark-hard-theme gruvbox-theme web-mode rainbow-mode proof-general elpy hindent php-mode go-mode kotlin-mode nginx-mode toml-mode dockerfile-mode purescript-mode markdown-mode jinja2-mode nim-mode rust-mode cmake-mode clojure-mode graphviz-dot-mode lua-mode glsl-mode yaml-mode scala-mode move-text nasm-mode editorconfig tide company powershell yasnippet multiple-cursors magit haskell-mode paredit ido-completing-read+ smex gruber-darker-theme org-cliplink dash-functional dash))
  '(safe-local-variable-values
    '((eval progn
            (auto-revert-mode 1)
