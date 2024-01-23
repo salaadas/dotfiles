@@ -26,9 +26,3 @@
                             (intern))))
     (rc/require theme-package)
     (load-theme theme t)))
-
-(rc/require 'dash)
-(require 'dash)
-
-(rc/require 'dash-functional)
-(require 'dash-functional)

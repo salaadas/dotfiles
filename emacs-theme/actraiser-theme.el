@@ -21,7 +21,7 @@
        (a-red+1      "#ff4f58")
        (a-orange     "#ff6622")
        (a-pink       "#DCA3A3")
-       (a-green      "#73c936")
+       (a-green      "#40b36c")
        (a-yellow-1   "#dbbe97")
        (a-yellow     "#eedd33") ; #ffdd33
        (a-gold       "#ffdd33")
@@ -32,26 +32,27 @@
        (a-niagara    "#96a9c9")
        (a-wisteria-1 "#88719d")
        (a-wisteria   "#9e95c7")
+       (a-aqua       "aquamarine")
 
-       (a-comment              a-wisteria-1)
+       (a-comment              "#40b36c")  ; #40b3b1
        (a-text                 a-yellow-1)
-       (a-doc-string           a-green)
+       (a-doc-string           "#40b36c")
        (a-selection            "#303838")
        (a-type-and-punctuation a-quartz)
-       (a-keyword              a-yellow)
+       (a-keyword              a-aqua)
        (a-variable             a-yellow-1)
        (a-function             a-yellow-1)
-       (a-string               a-green)
+       (a-string               "#27e3e3") ; a-green
        (a-constant             a-quartz)
        (a-preprocessor         a-quartz)
        (a-reference            a-quartz)
        (a-linenum-fg           a-bg+4)
-       (a-linenum-current-fg   a-yellow)
+       (a-linenum-current-fg   a-aqua)
        (a-warning              a-orange)
        (a-error                a-red+1)
        (a-success              "#95cc15")
        (a-custom-state         a-green)
-       (a-cursor               a-yellow)
+       (a-cursor               a-aqua)
        )
   (custom-theme-set-variables
    'actraiser
@@ -87,7 +88,7 @@
    `(linum ((t ,(list :foreground a-quartz
                       :background a-bg))))
    `(line-number ((t (:inherit default :background ,a-bg :foreground ,a-bg+4))))
-   `(line-number-current-line ((t (:inherit default :background ,a-bg :foreground ,a-yellow))))
+   `(line-number-current-line ((t (:inherit default :background ,a-bg :foreground ,a-aqua))))
    `(highlight ((t (:background ,a-red-2 :foreground nil))))
    `(highlight-current-line-face ((t ,(list :background a-red-2
                                             :foreground nil))))
@@ -141,7 +142,7 @@
    `(completions-annotations ((t (:inherit 'shadow))))
 
    ;; ido
-   `(ido-first-match ((t (:foreground ,a-yellow :bold nil))))
+   `(ido-first-match ((t (:foreground ,a-aqua :bold nil))))
    `(ido-only-match ((t (:foreground ,a-green :weight bold))))
    `(ido-subdir ((t (:foreground ,a-niagara :weight bold))))
 

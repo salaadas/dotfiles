@@ -1,16 +1,19 @@
 (package-initialize)
 
 (load "~/.emacs.rc/rc.el")
-
 (load "~/.emacs.rc/misc-rc.el")
-(load "~/.emacs.rc/org-mode-rc.el")
-(load "~/.emacs.rc/autocommit-rc.el")
+
+;;; @Temporary: testing the split threshold
+(setq split-height-threshold nil)
+
+;;; Change initial message of the *scratch* buffer
+(setq initial-scratch-message ";; Two plus two is ten... IN BASE FOUR! I'M FINE!")
 
 ;;; Appearance
 (defun rc/get-default-font ()
   (cond
    ((eq system-type 'windows-nt) "Consolas-13")
-   ((eq system-type 'gnu/linux) "Iosevka-16")))
+   ((eq system-type 'gnu/linux) "Iosevka-15")))
 
 (add-to-list 'default-frame-alist `(font . ,(rc/get-default-font)))
 
@@ -19,7 +22,9 @@
 (scroll-bar-mode 0)
 (column-number-mode 1)
 (show-paren-mode 1)
-(toggle-truncate-lines 1)
+
+;; @Note: this is temporary
+(setq minibuffer-frame-alist '((minibuffer . only)))
 
 ;; show ansi escape sequence in compilation mode Emacs
 (rc/require 'ansi-color)
@@ -71,14 +76,8 @@
   (interactive)
   (if (find-project-directory) (compile salaadas-makescript))
   (other-window 1))
-(global-set-key [f10] 'make-without-asking)
-
-
-;;; themes
-
-;; (rc/require-theme 'gruber-darker)
-;; (rc/require-theme 'zenburn)
-;; (load-theme 'adwaita t)
+(define-key global-map "\M-4" 'make-without-asking)
+(global-set-key [f9] 'make-without-asking)
 
 ;; my own theme
 (load-theme 'actraiser t)
@@ -100,9 +99,11 @@
   (set-face-attribute 'line-number nil :inherit 'default))
 
 ;;; color for comments
+(rc/require 'fixmee)
 (setq fixmee-mode '(simpc-mode c++-mode c-mode emacs-lisp-mode))
 (make-face 'font-lock-fixme-face)
 (make-face 'font-lock-note-face)
+(make-face 'font-lock-important-face)
 (make-face 'font-lock-incomplete-face)
 (make-face 'font-lock-todo-face)
 (mapc (lambda (mode)
@@ -110,11 +111,13 @@
 	     mode
 	     '(("\\<\\(Todo\\)" 1 'font-lock-todo-face t)
            ("\\<\\(Note\\)" 1 'font-lock-note-face t)
+           ("\\<\\(Important\\)" 1 'font-lock-important-face t)
            ("\\<\\(Incomplete\\)" 1 'font-lock-incomplete-face t)
            ("\\<\\(Fixme\\)" 1 'font-lock-fixme-face t))))
 	  fixmee-mode)
 (modify-face 'font-lock-todo-face "GreenYellow" nil nil t nil t nil nil)
 (modify-face 'font-lock-note-face "AntiqueWhite1" nil nil t nil t nil nil)
+(modify-face 'font-lock-important-face "gold" nil nil t nil t nil nil)
 (modify-face 'font-lock-incomplete-face "aquamarine" nil nil t nil t nil nil)
 (modify-face 'font-lock-fixme-face "IndianRed" nil nil t nil t nil nil)
 
@@ -131,14 +134,8 @@
 (define-key global-map "\M-o" 'other-window)
 (define-key global-map "\M-k" 'kill-this-buffer)
 
-;;; tree sitter
-(rc/require 'tree-sitter)
-(rc/require 'tree-sitter-langs)
-
 ;;; ido
 (rc/require 'smex 'ido-completing-read+)
-
-(require 'ido-completing-read+)
 
 (ido-mode 1)
 (ido-everywhere 1)
@@ -164,20 +161,14 @@
 ;;       web-mode-indent-style 2)
 
 ;;; c-mode
+(c-set-offset 'case-label '+)
 (setq-default c-basic-offset 4
               c-default-style '((java-mode . "java")
                                 (awk-mode . "awk")
                                 (other . "bsd")))
-
 (add-hook 'c-mode-hook (lambda ()
                          (interactive)
                          (c-toggle-comment-style -1)))
-
-(require 'package)
-;; ;; Any add to list for package-archives (to add marmalade or melpa) goes here
-;; (add-to-list 'package-archives 
-;;     '("MELPA" .
-;;       "http://melpa.org/packages/"))
 
 ;;; Paredit
 (rc/require 'paredit)
@@ -187,10 +178,7 @@
   (paredit-mode 1))
 
 (add-hook 'emacs-lisp-mode-hook  'rc/turn-on-paredit)
-(add-hook 'clojure-mode-hook     'rc/turn-on-paredit)
 (add-hook 'lisp-mode-hook        'rc/turn-on-paredit)
-(add-hook 'common-lisp-mode-hook 'rc/turn-on-paredit)
-(add-hook 'scheme-mode-hook      'rc/turn-on-paredit)
 
 ;;; Emacs lisp
 (add-hook 'emacs-lisp-mode-hook
@@ -198,17 +186,6 @@
              (local-set-key (kbd "C-c C-j")
                             (quote eval-print-last-sexp))))
 (add-to-list 'auto-mode-alist '("Cask" . emacs-lisp-mode))
-
-;;; Haskell mode
-(rc/require 'haskell-mode)
-
-(setq haskell-process-type 'cabal-new-repl)
-(setq haskell-process-log t)
-
-(add-hook 'haskell-mode-hook 'haskell-indent-mode)
-(add-hook 'haskell-mode-hook 'interactive-haskell-mode)
-(add-hook 'haskell-mode-hook 'haskell-doc-mode)
-(add-hook 'haskell-mode-hook 'hindent-mode)
 
 ;;; Whitespace mode
 (defun rc/set-up-whitespace-handling ()
@@ -221,17 +198,10 @@
 ;; (add-hook 'simpc-mode-hook 'rc/set-up-whitespace-handling)
 (add-hook 'emacs-lisp-mode 'rc/set-up-whitespace-handling)
 (add-hook 'java-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'lua-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'rust-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'scala-mode-hook 'rc/set-up-whitespace-handling)
 (add-hook 'markdown-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'haskell-mode-hook 'rc/set-up-whitespace-handling)
 (add-hook 'python-mode-hook 'rc/set-up-whitespace-handling)
 (add-hook 'asm-mode-hook 'rc/set-up-whitespace-handling)
 (add-hook 'nasm-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'go-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'nim-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'yaml-mode-hook 'rc/set-up-whitespace-handling)
 
 ;;; display-line-numbers-mode
 (when (version<= "26.0.50" emacs-version)
@@ -277,27 +247,12 @@
 ;; (global-set-key (kbd "C-c h a") 'helm-org-agenda-files-headings)
 ;; (global-set-key (kbd "C-c h r") 'helm-recentf)
 
-;;; yasnippet
-(rc/require 'yasnippet)
-
-(require 'yasnippet)
-
-(setq yas/triggers-in-field nil)
-(setq yas-snippet-dirs '("~/.emacs.snippets/"))
-
-(yas-global-mode 0)
-
-;;; word-wrap
-(defun rc/enable-word-wrap ()
-  (interactive)
-  (toggle-word-wrap 1))
+;;; truncate lines or global word wrap
+;; (setq-default truncate-lines t)
+;; (setq truncate-partial-width-windows nil)
+(global-word-wrap-whitespace-mode t)
 
 (add-hook 'markdown-mode-hook 'rc/enable-word-wrap)
-
-;;; nxml
-(add-to-list 'auto-mode-alist '("\\.html\\'" . nxml-mode))
-(add-to-list 'auto-mode-alist '("\\.xsd\\'" . nxml-mode))
-(add-to-list 'auto-mode-alist '("\\.ant\\'" . nxml-mode))
 
 ;;; tramp
 ;;; http://stackoverflow.com/questions/13794433/how-to-disable-autosave-for-tramp-buffers-in-emacs
@@ -319,31 +274,15 @@
 (rc/require 'company)
 (require 'company)
 
+;; (setq company-dabbrev-char-regexp "\\sw\\|[a-z-_'/]")
+(setq company-dabbrev-other-buffers 'all)
+(setq company-dabbrev-code-other-buffers (quote all)) ;; irrelevant
+(setq company-dabbrev-ignore-buffers "nil")
+
 (add-to-list 'company-backends '(company-dabbrev-code company-dabbrev company-capf))
-(setq company-dabbrev-downcase nil)
+;; (setq company-dabbrev-downcase nil)
 
 (global-company-mode)
-
-(add-hook 'tuareg-mode-hook
-          (lambda ()
-            (interactive)
-            (company-mode 0)))
-
-;;; Tide
-(rc/require 'tide)
-
-(defun rc/turn-on-tide ()
-  (interactive)
-  (tide-setup))
-
-(add-hook 'typescript-mode-hook 'rc/turn-on-tide)
-
-;;; Proof general
-(rc/require 'proof-general)
-(add-hook 'coq-mode-hook
-          '(lambda ()
-             (local-set-key (kbd "C-c C-q C-n")
-                            (quote proof-assert-until-point-interactive))))
 
 ;;; Nasm Mode
 (rc/require 'nasm-mode)
@@ -362,44 +301,20 @@
 (global-set-key (kbd "M-p") 'move-text-up)
 (global-set-key (kbd "M-n") 'move-text-down)
 
-;;; Ebisp
-(add-to-list 'auto-mode-alist '("\\.ebi\\'" . lisp-mode))
-
 ;;; Packages that don't require configuration
 (rc/require
- 'scala-mode
- 'yaml-mode
  'glsl-mode
- 'lua-mode
- 'less-css-mode
- 'graphviz-dot-mode
- 'clojure-mode
  'cmake-mode
- 'rust-mode
- 'nim-mode
  'jinja2-mode
  'markdown-mode
- 'purescript-mode
- 'nix-mode
- 'dockerfile-mode
- 'toml-mode
- 'nginx-mode
- 'kotlin-mode
- 'go-mode
  'php-mode
- 'hindent
- 'elpy
  'typescript-mode
- 'rfc-mode
- 'sml-mode
  )
-
-(load "~/.emacs.shadow/shadow-rc.el" t)
 
 (add-to-list 'load-path "~/.emacs.local/")
 
 (require 'simpc-mode)
-(add-to-list 'auto-mode-alist '("\\.[hh|cc]\\'" . simpc-mode))
+;; (add-to-list 'auto-mode-alist '("\\.[hh|cc]\\'" . simpc-mode))
 
 (defun astyle-buffer (&optional justify)
   (interactive)
@@ -434,15 +349,10 @@ compilation-error-regexp-alist-alist
  ;; If there is more than one, they won't work right.
  '(display-line-numbers-type 'relative)
  '(js-indent-level 2)
- '(org-agenda-dim-blocked-tasks nil)
- '(org-agenda-exporter-settings '((org-agenda-tag-filter-preset (list "+personal"))))
- '(org-cliplink-transport-implementation 'url-el)
- '(org-enforce-todo-dependencies nil)
- '(org-modules
-   '(org-bbdb org-bibtex org-docview org-gnus org-habit org-info org-irc org-mhe org-rmail org-w3m))
- '(org-refile-use-outline-path 'file)
- '(package-selected-packages
-   '(ansi-color-theme fixmee highlight-numbers tree-sitter-langs tree-sitter helm dart-mode gruvbox-dark-hard-theme gruvbox-theme web-mode rainbow-mode proof-general elpy hindent php-mode go-mode kotlin-mode nginx-mode toml-mode dockerfile-mode purescript-mode markdown-mode jinja2-mode nim-mode rust-mode cmake-mode clojure-mode graphviz-dot-mode lua-mode glsl-mode yaml-mode scala-mode move-text nasm-mode editorconfig tide company powershell yasnippet multiple-cursors magit haskell-mode paredit ido-completing-read+ smex gruber-darker-theme org-cliplink dash-functional dash))
+ '(imenu-auto-rescan t)
+ '(imenu-auto-rescan-maxout 500000)
+ ;; '(package-selected-packages
+ ;;   '(ansi-color-theme fixmee highlight-numbers rainbow-mode php-mode markdown-mode cmake-mode glsl-mode yaml-mode move-text nasm-mode editorconfig company powershell yasnippet multiple-cursors magit paredit ido-completing-read+ smex dash-functional dash))
  '(safe-local-variable-values
    '((eval progn
            (auto-revert-mode 1)
