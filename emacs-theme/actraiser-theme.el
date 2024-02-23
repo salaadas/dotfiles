@@ -10,7 +10,7 @@
        (a-white      "#ffffff")
        (a-black      "#000000")
        (a-bg-1       "#030805")
-       (a-bg         "#081810")
+       (a-bg         "#081810") ; #081912
        (a-bg+1       "#223225")
        (a-bg+2       "#3f483f")
        (a-bg+3       "#485548")
@@ -62,7 +62,7 @@
    'actraiser
 
    ;; fundamental elements colorscheme
-   `(border ((t ,(list :background a-bg-1
+   `(border ((t ,(list :background a-bg
                        :foreground a-bg+2))))
    `(cursor ((t (:background ,a-cursor))))
    `(default ((t ,(list :background a-bg

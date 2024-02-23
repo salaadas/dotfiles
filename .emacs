@@ -7,7 +7,9 @@
 (setq split-height-threshold nil)
 
 ;;; Change initial message of the *scratch* buffer
-(setq initial-scratch-message ";; Two plus two is ten... IN BASE FOUR! I'M FINE!")
+;; (setq initial-scratch-message ";; Two plus two is ten... IN BASE FOUR! I'M FINE!")
+;; (setq initial-scratch-message ";; There are 69,105 bits in this file.")
+(setq initial-scratch-message ";; The strong man is not the good wrestler; but the strong man is he who controls himself when he is angry.")
 
 ;;; Appearance
 (defun rc/get-default-font ()
@@ -122,8 +124,10 @@
 (modify-face 'font-lock-fixme-face "IndianRed" nil nil t nil t nil nil)
 
 ;;; my custom keys
-(define-key global-map "\M-[" 'previous-buffer)
-(define-key global-map "\M-]" 'next-buffer)
+
+;;; for some reason, the definition of 'previous' and 'next' in emacs is wacky
+(define-key global-map "\M-]" 'previous-buffer)
+(define-key global-map "\M-[" 'next-buffer)
 
 (define-key global-map "\M-j" 'imenu)
 
@@ -161,14 +165,18 @@
 ;;       web-mode-indent-style 2)
 
 ;;; c-mode
-(c-set-offset 'case-label '+)
+(add-hook 'java-mode-hook (lambda ()
+   (setq c-default-style "bsd")))
+
 (setq-default c-basic-offset 4
-              c-default-style '((java-mode . "java")
-                                (awk-mode . "awk")
+              c-default-style '((awk-mode . "awk")
                                 (other . "bsd")))
 (add-hook 'c-mode-hook (lambda ()
                          (interactive)
                          (c-toggle-comment-style -1)))
+(add-hook 'c++-mode-hook (lambda ()
+                           (c-set-offset 'case-label '+)))
+(c-set-offset 'case-label '+)
 
 ;;; Paredit
 (rc/require 'paredit)
@@ -252,6 +260,9 @@
 ;; (setq truncate-partial-width-windows nil)
 (global-word-wrap-whitespace-mode t)
 
+;;; Allow maximum 1 line for the mini-buffer
+(setq max-mini-window-height 1)
+
 (add-hook 'markdown-mode-hook 'rc/enable-word-wrap)
 
 ;;; tramp
@@ -315,6 +326,8 @@
 
 (require 'simpc-mode)
 ;; (add-to-list 'auto-mode-alist '("\\.[hh|cc]\\'" . simpc-mode))
+
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
 (defun astyle-buffer (&optional justify)
   (interactive)
