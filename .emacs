@@ -15,7 +15,7 @@
 (defun rc/get-default-font ()
   (cond
    ((eq system-type 'windows-nt) "Consolas-13")
-   ((eq system-type 'gnu/linux) "Iosevka-15")))
+   ((eq system-type 'gnu/linux) "Iosevka-12")))
 
 (add-to-list 'default-frame-alist `(font . ,(rc/get-default-font)))
 
@@ -126,8 +126,8 @@
 ;;; my custom keys
 
 ;;; for some reason, the definition of 'previous' and 'next' in emacs is wacky
-(define-key global-map "\M-]" 'previous-buffer)
-(define-key global-map "\M-[" 'next-buffer)
+(define-key global-map "\M-]" 'next-buffer)
+(define-key global-map "\M-[" 'previous-buffer)
 
 (define-key global-map "\M-j" 'imenu)
 
@@ -361,11 +361,11 @@ compilation-error-regexp-alist-alist
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(display-line-numbers-type 'relative)
- '(js-indent-level 2)
  '(imenu-auto-rescan t)
  '(imenu-auto-rescan-maxout 500000)
- ;; '(package-selected-packages
- ;;   '(ansi-color-theme fixmee highlight-numbers rainbow-mode php-mode markdown-mode cmake-mode glsl-mode yaml-mode move-text nasm-mode editorconfig company powershell yasnippet multiple-cursors magit paredit ido-completing-read+ smex dash-functional dash))
+ '(js-indent-level 2)
+ '(package-selected-packages
+   '(rainbow-mode typescript-mode smex powershell php-mode paredit nasm-mode multiple-cursors move-text markdown-mode magit jinja2-mode ido-completing-read+ glsl-mode fixmee company cmake-mode))
  '(safe-local-variable-values
    '((eval progn
            (auto-revert-mode 1)

@@ -31,7 +31,7 @@ exec --no-startup-id picom -b
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+exec --no-startup-id xss-lock -- i3lock -n -c 081810
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
@@ -202,13 +202,13 @@ bindsym XF86MonBrightnessDown exec light -U 5 && brightness_change_notif
 # exec --no-startup-id xautolock -time 20 -locker 'i3lock --color=081810 -n' -detectsleep -killtime 60 -killer 'systemctl suspend' &
 # exec --no-startup-id xset dpms 0 0 600 &
 # exec --no-startup-id xss-lock -- i3lock -n --color=081810
-exec_always --no-startup-id xset dpms 0 0 1200 &
-exec_always --no-startup-id xss-lock -- i3lock -n --color=081810 &
+# exec_always --no-startup-id xset dpms 0 0 1200 &
+# exec_always --no-startup-id xss-lock -- i3lock -n --color=081810 &
 bindsym $mod+Pause exec systemctl suspend
-bindsym Pause exec i3lock --color=#081810
+bindsym Pause exec i3lock --color=081810
 
 # set up alt-tab feature
-exec --no-startup-id alttab -font xft:"DejaVu Sans Condensed-12" -fg '#dbbe97' -bg '#181818' -frame '#dca3a3' -t 256x256 -i 256x70 -s 2
+exec --no-startup-id alttab -font xft:"DejaVu Sans Condensed-12" -fg '#dbbe97' -bg '#181818' -frame '#dca3a3' -t 256x256 -i 256x70 -s 2 -d 2
 
 # set up scratch pad
 bindsym $mod+Shift+BackSpace move scratchpad

@@ -10,7 +10,7 @@
        (a-white      "#ffffff")
        (a-black      "#000000")
        (a-bg-1       "#030805")
-       (a-bg         "#081810") ; #081912
+       (a-bg         "#051510") ; #081810
        (a-bg+1       "#223225")
        (a-bg+2       "#3f483f")
        (a-bg+3       "#485548")
@@ -188,20 +188,20 @@
                                :foreground a-bg+1))))
    `(whitespace-hspace ((t ,(list :background a-bg
                                   :foreground a-bg+2))))
-   `(whitespace-line ((t ,(list :background a-bg+2
+   `(whitespace-line ((t ,(list :background a-bg
                                 :foreground a-red+1))))
    `(whitespace-newline ((t ,(list :background a-bg
                                    :foreground a-bg+2))))
-   `(whitespace-trailing ((t ,(list :background a-red
-                                    :foreground a-red))))
-   `(whitespace-empty ((t ,(list :background a-yellow
-                                 :foreground a-yellow))))
-   `(whitespace-indentation ((t ,(list :background a-yellow
-                                       :foreground a-red))))
-   `(whitespace-space-after-tab ((t ,(list :background a-yellow
-                                           :foreground a-yellow))))
-   `(whitespace-space-before-tab ((t ,(list :background a-brown
-                                            :foreground a-brown))))
+   `(whitespace-trailing ((t ,(list :background a-red+1
+                                    :foreground a-red+1))))
+   `(whitespace-empty ((t ,(list :background a-niagara-2
+                                 :foreground a-niagara-2))))
+   `(whitespace-indentation ((t ,(list :background a-bg
+                                       :foreground a-bg+1))))
+   `(whitespace-space-after-tab ((t ,(list :background a-red+1
+                                           :foreground a-red+1))))
+   `(whitespace-space-before-tab ((t ,(list :background a-red+1
+                                            :foreground a-red+1))))
 
    ;; mode-line stuff
    `(mode-line ((t ,(list :background a-text

@@ -16,7 +16,7 @@ URxvt.scrollBar: false
 
 ! Actraiser
 URxvt*foreground: #dbbe97
-URxvt*background: #081810
+URxvt*background: #051510
 URxvt*color0:  #2E3436
 URxvt*color1:  #a40000
 URxvt*color2:  #4E9A06
