@@ -9,15 +9,20 @@
 ;;; Change initial message of the *scratch* buffer
 ;; (setq initial-scratch-message ";; Two plus two is ten... IN BASE FOUR! I'M FINE!")
 ;; (setq initial-scratch-message ";; There are 69,105 bits in this file.")
-(setq initial-scratch-message ";; The strong man is not the good wrestler; but the strong man is he who controls himself when he is angry.")
+(setq initial-scratch-message ";; This space intentionally left blank.")
+
+(setq pop-up-windows nil)
+(setq Man-width-max nil)
 
 ;;; Appearance
 (defun rc/get-default-font ()
   (cond
-   ((eq system-type 'windows-nt) "Consolas-13")
-   ((eq system-type 'gnu/linux) "Iosevka-12")))
+   ((eq system-type 'windows-nt) "Consolas-15")
+   ((eq system-type 'gnu/linux) "Iosevka-16")))
 
 (add-to-list 'default-frame-alist `(font . ,(rc/get-default-font)))
+(add-to-list 'default-frame-alist '(width . 110))
+(add-to-list 'default-frame-alist '(height . 40))
 
 (tool-bar-mode 0)
 (menu-bar-mode 0)
@@ -38,7 +43,8 @@
 ;; set up hot key for compilling
 
 (setq compilation-directory-locked nil)
-(setq salaadas-makescript "./build.sh")
+(setq salaadas-build-script-name "build.sh")
+(setq salaadas-makescript (concat "./" salaadas-build-script-name))
 (setq salaadas-build-directory "build")
 
 (defun find-project-directory-recursive ()
@@ -47,9 +53,10 @@
   (if (string= default-directory "~") (error "Whoops! Could not find the build directory!!")
       nil)
 
-  (if (file-directory-p salaadas-build-directory) (cd salaadas-build-directory)
-    (cd "../")
-    (find-project-directory-recursive)))
+  (if (directory-files "." salaadas-build-script-name salaadas-build-script-name) (cd "./")
+    (if (file-directory-p salaadas-build-directory) (cd salaadas-build-directory)
+      ((cd "../")
+       (find-project-directory-recursive)))))
 
 (defun lock-compilation-directory ()
   "The compilation process should NOT hunt for a build directory."
@@ -92,7 +99,7 @@
 (kill-buffer "*Messages*")
 
 ;;; show the clock in the taskbar
-(setq display-time-format "---------------- %a, %d %b %y: %I:%M%p")
+(setq display-time-format "---------- %a, %d %b %y: %I:%M%p")
 (setq display-time-default-load-average nil)
 (setq display-time-mail-string "")
 (display-time)
@@ -138,6 +145,9 @@
 (define-key global-map "\M-o" 'other-window)
 (define-key global-map "\M-k" 'kill-this-buffer)
 
+;; Disable the emacs exit prompt -- "Really exit Emacs?" -- which is annoying.
+(setq confirm-kill-emacs nil)
+
 ;;; ido
 (rc/require 'smex 'ido-completing-read+)
 
@@ -148,21 +158,16 @@
 (global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
-;;; hl-line mode
+;; Highlight the current line.
 (global-hl-line-mode 1)
-;; if you want to get funky
+(set-face-background 'hl-line "#450828")
+
+;; If you want to get funky.
 ;; (set-face-background 'hl-line "midnight blue")
 ;; (set-face-background 'hl-line "RoyalBlue4")
 
 ;;; javascript-mode
-;; (setq js-indent-level 2)
-
-;; (setq js-indent-level 2
-;;       js2-basic-offset 2
-;;       web-mode-markup-indent-offset 2
-;;       web-mode-css-indent-offset 2
-;;       web-mode-code-indent-offset 2
-;;       web-mode-indent-style 2)
+(setq js-indent-level 4)
 
 ;;; c-mode
 (add-hook 'java-mode-hook (lambda ()
@@ -208,8 +213,9 @@
 (add-hook 'java-mode-hook 'rc/set-up-whitespace-handling)
 (add-hook 'markdown-mode-hook 'rc/set-up-whitespace-handling)
 (add-hook 'python-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'asm-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'nasm-mode-hook 'rc/set-up-whitespace-handling)
+
+;; (add-hook 'asm-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'nasm-mode-hook 'rc/set-up-whitespace-handling)
 
 ;;; display-line-numbers-mode
 (when (version<= "26.0.50" emacs-version)
@@ -268,6 +274,10 @@
 ;;; tramp
 ;;; http://stackoverflow.com/questions/13794433/how-to-disable-autosave-for-tramp-buffers-in-emacs
 (setq tramp-auto-save-directory "/tmp")
+
+;;; glsl mode
+(add-to-list 'auto-mode-alist '("\\.gl\\'" . glsl-mode))
+(add-to-list 'auto-mode-alist '("\\.glh\\'" . glsl-mode))
 
 ;;; powershell
 (rc/require 'powershell)

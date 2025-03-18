@@ -1,5 +1,4 @@
-(deftheme actraiser
-  "Dark-themed colorscheme for Emacs 29")
+(deftheme actraiser "Dark-themed colorscheme for Emacs 27 and above")
 
 (unless (>= emacs-major-version 27)
   (error "The actraiser theme requires Emacs 27 or later!"))
@@ -10,7 +9,7 @@
        (a-white      "#ffffff")
        (a-black      "#000000")
        (a-bg-1       "#030805")
-       (a-bg         "#051510") ; #081810
+       (a-bg         "#081310") ; #051510
        (a-bg+1       "#223225")
        (a-bg+2       "#3f483f")
        (a-bg+3       "#485548")
@@ -37,7 +36,7 @@
        (a-comment              "#40b36c")  ; #40b3b1
        (a-text                 a-yellow-1)
        (a-doc-string           "#40b36c")
-       (a-selection            "#303838")
+       (a-selection            "#153232")  ; #303838
        (a-type-and-punctuation a-quartz)
        (a-keyword              a-aqua)
        (a-variable             a-yellow-1)
